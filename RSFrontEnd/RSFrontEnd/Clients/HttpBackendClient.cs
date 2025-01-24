@@ -24,7 +24,7 @@ namespace RSFrontEnd.Clients
             }
             catch (HttpRequestException ex)
             {
-                return default(T);
+                return default;
             }
         }
 
@@ -37,9 +37,23 @@ namespace RSFrontEnd.Clients
             }
             catch (HttpRequestException ex)
             {
-                return HttpStatusCode.BadRequest;
+                return HttpStatusCode.ServiceUnavailable;
             }
         }
+
+        public async Task<HttpStatusCode> PostRequest(T postValue)
+        {
+            try
+            {
+                var response = await client.PostAsJsonAsync<T>(Url, postValue);
+                return response.StatusCode;
+            }
+            catch
+            {
+                return HttpStatusCode.ServiceUnavailable;
+            }
+        }
+
 
     }
 

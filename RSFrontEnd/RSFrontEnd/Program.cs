@@ -38,6 +38,8 @@ namespace RSFrontEnd
                 .AddInteractiveWebAssemblyRenderMode()
                 .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
 
+            app.UseStatusCodePagesWithRedirects("/404");
+
             app.Run();
         }
     }

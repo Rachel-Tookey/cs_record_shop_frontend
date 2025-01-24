@@ -1,6 +1,7 @@
 ﻿@using RSFrontEnd.Models; 
+@inject NavigationManager NavManager
 
-<div class="artist">
+<div class="artist" @onclick="ChangePage">
 
     <h5>@artist.Name</h5>
     <img src="@artist.ImageUrl" width="100%"/>
@@ -10,5 +11,11 @@
 
     [Parameter]
     public Artist artist { get; set;  }
+
+
+    public void ChangePage()
+    {
+        NavManager.NavigateTo($"/artists/{artist.Id}");
+    }
 
 }

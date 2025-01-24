@@ -1,0 +1,59 @@
+﻿@using RSFrontEnd.Models;
+@using RSFrontEnd.Clients;
+
+
+<h6>@Success</h6>
+
+<form method="post" @onsubmit="PostArtist" @formname="add-artist-form">
+    <AntiForgeryToken />
+
+    <div>
+        <label>
+            Name:
+            <InputText @bind-Value="@artist.Name"/> 
+        </label>
+    </div>
+
+    <div>
+        <label>
+            Image (url):
+            <InputText @bind-Value="@artist.ImageUrl"/> 
+        </label>
+    </div>
+        <div>
+        <label>
+            Years Active:
+            <InputNumber @bind-Value="@artist.YearsActive"/> 
+        </label>
+    </div>
+
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+
+
+</form>
+
+
+@code {
+
+    public Artist artist { get; set; } = new Artist(); 
+
+    public string Success { get; set; }
+
+    public async Task PostArtist()
+    {
+        var client = new HttpBackendClient<Artist>("api/artist");
+        var response = await client.PostRequest(artist); 
+        if (response == System.Net.HttpStatusCode.Created)
+        {
+            Success = "Artist added!";
+        } else
+        {
+            Console.WriteLine(response);
+            Success = "Something went wrong! Please try again later";
+        }
+    }
+
+
+}

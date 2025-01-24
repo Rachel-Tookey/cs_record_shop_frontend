@@ -66,9 +66,16 @@ h1:focus {
     border-style: double;
     border-color: black;
     margin: 10px; 
-    box-shadow: 5px 5px 5px green; 
-
+    height: 300px; 
+    overflow: hidden;
 }
+
+.artist:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+    box-shadow: 5px 5px 5px grey;
+}
+
 
 h6 {
     margin: 20px; 
