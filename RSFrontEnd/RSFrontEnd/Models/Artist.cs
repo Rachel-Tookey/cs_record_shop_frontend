@@ -15,6 +15,9 @@ namespace RSFrontEnd.Models
         [JsonPropertyName("imageurl")]
         public string ImageUrl {  get; set; }
 
+        [JsonPropertyName("yearsactive")]
+        public int YearsActive { get; set; }
+
         [JsonPropertyName("albums")]
         public List<Album> Albums { get; set; }
 

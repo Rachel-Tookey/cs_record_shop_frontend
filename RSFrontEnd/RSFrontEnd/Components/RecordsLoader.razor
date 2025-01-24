@@ -16,7 +16,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var webclient = new HttpBackendClient<Artist>("api/artist");
+        var webclient = new HttpBackendClient<List<Artist>>("api/artist");
         artists = await webclient.GetRequest(); 
     }
 

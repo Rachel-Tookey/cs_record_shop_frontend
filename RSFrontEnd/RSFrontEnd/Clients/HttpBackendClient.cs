@@ -13,18 +13,31 @@ namespace RSFrontEnd.Clients
             client = new HttpClient(); 
         }
 
-        public async Task<List<T>> GetRequest()
+        public async Task<T> GetRequest()
         {
             try
             {
-                List<T> response = await client.GetFromJsonAsync<List<T>>(Url);
+                T response = await client.GetFromJsonAsync<T>(Url);
                 return response;
             }
             catch (HttpRequestException ex)
             {
-                return null;
+                return default(T);
             }
         }
+
+        public async Task PutRequest()
+        {
+            try
+            {
+
+            }
+            catch (HttpRequestException ex)
+            {
+
+            }
+        }
+
     }
 
 }

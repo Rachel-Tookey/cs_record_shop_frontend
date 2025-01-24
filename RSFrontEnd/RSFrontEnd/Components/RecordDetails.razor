@@ -1,0 +1,49 @@
+﻿@using RSFrontEnd.Models;
+@using RSFrontEnd.Clients;
+@using RSFrontEnd.Models.InputModels;
+
+@if (artist == null)
+{
+    <Loader></Loader>
+} else
+{
+    
+
+
+<h6>@artist.Name</h6>
+
+<InputText></InputText>
+
+<img src="@artist.ImageUrl"/>
+
+<InputText></InputText>
+
+<h6>@artist.YearsActive</h6>
+
+<InputText></InputText>
+
+@foreach (var album in artist.Albums)
+{
+    <p>@album.Name</p>
+    <p>@album.ReleaseDate</p>
+}
+
+
+<button>Save changes?</button>
+
+
+}
+
+@code {
+
+    public Artist artist { get; set; }
+
+    public UpdateArtist updateArtist { get; set;  }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var webclient = new HttpBackendClient<Artist>("api/artist?id=1");
+        artist = await webclient.GetRequest();
+    }
+
+}
