@@ -59,6 +59,9 @@
 
 @code {
 
+    [Parameter]
+    public int Id { get; set; }
+
     public Artist artist { get; set; }
 
     public string yearsactive { get; set; }
@@ -67,18 +70,22 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var webclient = new HttpBackendClient<Artist>("api/artist/1");
+        var webclient = new HttpBackendClient<Artist>($"api/artist/{Id}");
         artist = await webclient.GetRequest();
         yearsactive = artist.YearsActive.ToString();
     }
 
-    public void UpdateMe()
+    public async void UpdateMe()
     {
         if (Int32.TryParse(yearsactive, out int YA))
         {
             artist.YearsActive = YA;
             var webclient = new HttpBackendClient<Artist>("api/artist");
-            webclient.PutRequest(artist);
+            var response = await webclient.PutRequest(artist);
+            if (response == System.Net.HttpStatusCode.OK)
+            {
+                Text = "Record saved!";
+            }
         }
 
     }

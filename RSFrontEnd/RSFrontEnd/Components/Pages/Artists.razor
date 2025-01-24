@@ -1,0 +1,19 @@
+﻿@page "/artists/{Id:int?}"
+@rendermode InteractiveServer
+@using RSFrontEnd.Models;
+
+@if (Id == null)
+{
+    <RecordsLoader></RecordsLoader>
+} else
+{
+    <RecordDetailsLoader id="@Id"></RecordDetailsLoader>
+}
+
+
+@code {
+
+    [Parameter]
+    public int? Id { get; set; }
+
+}
