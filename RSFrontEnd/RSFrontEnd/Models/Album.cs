@@ -1,0 +1,28 @@
+﻿using System.Text.Json.Serialization;
+
+namespace RSFrontEnd.Models
+{
+    public class Album
+    {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("artistid")]
+        public int ArtistId { get; set; }
+
+        public Artist Artist { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+        [JsonPropertyName("releasedate")]
+        public DateTime ReleaseDate { get; set; }
+
+        public List<Genre> Genres { get; set; }
+
+
+    }
+}

@@ -1,0 +1,14 @@
+﻿@using RSFrontEnd.Models; 
+
+<div class="artist">
+
+    <h5>@artist.Name</h5>
+    <img src="@artist.ImageUrl" width="100%"/>
+</div>
+
+@code {
+
+    [Parameter]
+    public Artist artist { get; set;  }
+
+}

@@ -1,0 +1,23 @@
+﻿@using RSFrontEnd.Models;
+@using RSFrontEnd.Clients; 
+
+@if(artists != null)
+{
+    <ArtistsSummaryList artists="@artists"></ArtistsSummaryList>
+} else
+{
+    <Loader></Loader>
+}
+
+
+@code {
+
+    public List<Artist> artists { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var webclient = new HttpBackendClient<Artist>("api/artist");
+        artists = await webclient.GetRequest(); 
+    }
+
+}
