@@ -68,10 +68,10 @@ h1:focus {
     margin: 10px; 
     height: 300px; 
     overflow: hidden;
+    position: relative;
 }
 
 .artist:hover {
-    cursor: pointer;
     transform: scale(1.01);
     box-shadow: 5px 5px 5px grey;
 }
@@ -81,3 +81,14 @@ h6 {
     margin: 20px; 
 }
 
+.artist img {
+    cursor: pointer;
+}
+
+#trash {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 1px;
+    cursor: pointer;
+}

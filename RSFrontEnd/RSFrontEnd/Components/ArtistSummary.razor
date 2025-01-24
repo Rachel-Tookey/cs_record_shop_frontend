@@ -1,10 +1,12 @@
 ﻿@using RSFrontEnd.Models; 
+@using RSFrontEnd.Clients;
 @inject NavigationManager NavManager
 
-<div class="artist" @onclick="ChangePage">
+<div class="artist" >
+    <TrashIcon></TrashIcon>
+    <h5>@artist.Name</h5> 
+    <img src="@artist.ImageUrl" width="100%" @onclick="ChangePage" />
 
-    <h5>@artist.Name</h5>
-    <img src="@artist.ImageUrl" width="100%"/>
 </div>
 
 @code {
@@ -16,6 +18,12 @@
     public void ChangePage()
     {
         NavManager.NavigateTo($"/artists/{artist.Id}");
+    }
+
+    public async Task DeleteArtist()
+    {
+        var client = new HttpBackendClient<Artist>($"api/artist/{artist.Id}");
+        var response = await client.DeleteRequest();
     }
 
 }

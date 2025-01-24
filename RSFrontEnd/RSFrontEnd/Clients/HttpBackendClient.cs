@@ -54,6 +54,20 @@ namespace RSFrontEnd.Clients
             }
         }
 
+        public async Task<HttpStatusCode> DeleteRequest()
+        {
+            try
+            {
+                var response = await client.DeleteAsync(Url);
+                return response.StatusCode;
+            }
+            catch
+            {
+                return HttpStatusCode.ServiceUnavailable;
+            }
+
+        }
+
 
     }
 
