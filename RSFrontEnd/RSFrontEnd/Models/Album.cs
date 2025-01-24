@@ -13,6 +13,7 @@ namespace RSFrontEnd.Models
         [JsonPropertyName("artistid")]
         public int ArtistId { get; set; }
 
+        [JsonPropertyName("artist")]
         public Artist Artist { get; set; }
 
         [JsonPropertyName("description")]
@@ -21,6 +22,7 @@ namespace RSFrontEnd.Models
         [JsonPropertyName("releasedate")]
         public DateTime ReleaseDate { get; set; }
 
+        [JsonPropertyName("genres")]
         public List<Genre> Genres { get; set; }
 
 

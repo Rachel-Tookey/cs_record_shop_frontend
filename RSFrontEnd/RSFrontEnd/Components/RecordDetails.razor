@@ -1,49 +1,87 @@
 ﻿@using RSFrontEnd.Models;
 @using RSFrontEnd.Clients;
 @using RSFrontEnd.Models.InputModels;
+@rendermode InteractiveServer
+
 
 @if (artist == null)
 {
     <Loader></Loader>
 } else
 {
+
+    <div class="container">
+    <div class="row align-items-start">
+
+        <div class="col">
     
+            <h1>@Text</h1>
+            <h3>Update Artist</h3>
+                
+            <br />
 
+            <label for="an">Artist Name:</label>
+               
+            <br />
 
-<h6>@artist.Name</h6>
+            <InputText id="an" @bind-Value="@artist.Name"/>
 
-<InputText></InputText>
+            <br />
 
-<img src="@artist.ImageUrl"/>
+            <label for="au">Artist Url:</label>
+               
+            <br />
 
-<InputText></InputText>
+            <InputText id="au" @bind-Value="@artist.ImageUrl"/>
 
-<h6>@artist.YearsActive</h6>
+            <br />
 
-<InputText></InputText>
+            <label for="ya">Years Active:</label>
+            
+            <br />
 
-@foreach (var album in artist.Albums)
-{
-    <p>@album.Name</p>
-    <p>@album.ReleaseDate</p>
-}
+            <InputText id="ya" @bind-Value="yearsactive" />
 
+            <br />
 
-<button>Save changes?</button>
+            <button @onclick="UpdateMe">Save changes?</button>
 
+        </div>
 
+        <div class="col">
+
+            <img src="@artist.ImageUrl" />
+    </div>
+    </div>
+        
+    </div>
 }
 
 @code {
 
     public Artist artist { get; set; }
 
-    public UpdateArtist updateArtist { get; set;  }
+    public string yearsactive { get; set; }
+
+    public string Text { get; set;  }
 
     protected override async Task OnInitializedAsync()
     {
-        var webclient = new HttpBackendClient<Artist>("api/artist?id=1");
+        var webclient = new HttpBackendClient<Artist>("api/artist/1");
         artist = await webclient.GetRequest();
+        yearsactive = artist.YearsActive.ToString();
     }
+
+    public void UpdateMe()
+    {
+        if (Int32.TryParse(yearsactive, out int YA))
+        {
+            artist.YearsActive = YA;
+            var webclient = new HttpBackendClient<Artist>("api/artist");
+            webclient.PutRequest(artist);
+        }
+
+    }
+
 
 }

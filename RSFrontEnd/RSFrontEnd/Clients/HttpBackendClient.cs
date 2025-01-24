@@ -1,4 +1,5 @@
 ﻿using RSFrontEnd.Models;
+using System.Text.Json; 
 
 namespace RSFrontEnd.Clients
 {
@@ -26,11 +27,12 @@ namespace RSFrontEnd.Clients
             }
         }
 
-        public async Task PutRequest()
+        public async Task PutRequest(T updateValue)
         {
             try
             {
-
+                var response = await client.PutAsJsonAsync<T>(Url, updateValue);
+                Console.WriteLine(response);
             }
             catch (HttpRequestException ex)
             {
