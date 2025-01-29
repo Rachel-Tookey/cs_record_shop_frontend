@@ -125,20 +125,18 @@ h6 {
 .searchresults {
     max-height: 200px; 
     overflow-y: auto;
-    position: absolute;
-    top: 100%; 
+    top: 0; 
     left: 0;
     width: 100%;
     background-color: white;
     border: 1px solid #ccc;
-    z-index: 2000; 
+    z-index: 9999; 
 }
 
 .searchresults .list-group-item {
     display: block;
     width: 100%;
     text-align: center;
-
 }
 
 
@@ -148,6 +146,9 @@ h6 {
     cursor: pointer;
 }
 
-.test {
-    z-index: 1000;
+.searchwrapper {
+    position: absolute;
+    top: 15%;  
+    left: 36.5%;
+    width: 100%;
 }
