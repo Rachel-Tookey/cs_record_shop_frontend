@@ -4,35 +4,43 @@
 
 <h6>@Success</h6>
 
-<form method="post" @onsubmit="PostArtist" @formname="add-artist-form">
+<EditForm FormName="AddArtist" Model="@artist" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
+    
     <AntiForgeryToken />
+    <DataAnnotationsValidator />
 
     <div>
-        <label>
-            Name:
-            <InputText @bind-Value="@artist.Name"/> 
-        </label>
+        <label for="InputName">Name:</label>
+            <InputText id="InputName" @bind-Value="@artist.Name"/> 
+            <ValidationMessage For="@(() => artist.Name)" />
     </div>
 
+    <br />
     <div>
-        <label>
-            Image (url):
-            <InputText @bind-Value="@artist.ImageUrl"/> 
-        </label>
+        <label for="InputUrl">Image (url):</label>
+        <InputText id="InputUrl" @bind-Value="@artist.ImageUrl"/>
+        <ValidationMessage For="@(() => artist.ImageUrl)" />
     </div>
-        <div>
-        <label>
-            Years Active:
-            <InputNumber @bind-Value="@artist.YearsActive"/> 
-        </label>
+    
+    <div>
+        <img src="@artist.ImageUrl" @onerror="@(() => ImageValid = false)" @onload="(() => ImageValid = true)" />
     </div>
+
+
+    <div>
+        <label for="YearsActive">Years Active:</label>
+            <InputNumber id="YearsActive" @bind-Value="@artist.YearsActive"/>
+        <ValidationMessage For="@(() => artist.YearsActive)" />
+    </div>
+
+    <br />
 
     <div>
         <button type="submit">Submit</button>
     </div>
 
 
-</form>
+</EditForm>
 
 
 @code {
@@ -41,19 +49,35 @@
 
     public string Success { get; set; }
 
-    public async Task PostArtist()
+    public bool ImageValid { get; set;  } 
+
+    public void HandleInvalidSubmit()
     {
-        var client = new HttpBackendClient<Artist>("api/artist");
-        var response = await client.PostRequest(artist); 
-        if (response == System.Net.HttpStatusCode.Created)
-        {
-            Success = "Artist added!";
+        Success = "Some fields are invalid";
+    }
+
+
+    public async Task HandleValidSubmit()
+    {
+        if (ImageValid) {
+            var client = new HttpBackendClient<Artist>("api/artist");
+            var response = await client.PostRequest(artist); 
+            if (response == System.Net.HttpStatusCode.Created)
+            {
+                Success = "Artist added!";
+                artist = new Artist(); 
+            } else
+            {
+                Success = "Something went wrong! Please try again later";
+            }
         } else
         {
-            Console.WriteLine(response);
-            Success = "Something went wrong! Please try again later";
+            HandleInvalidSubmit(); 
         }
+
     }
+
+
 
 
 }

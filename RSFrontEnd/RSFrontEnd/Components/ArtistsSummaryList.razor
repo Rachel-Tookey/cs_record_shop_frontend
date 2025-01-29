@@ -1,4 +1,6 @@
 ﻿@using RSFrontEnd.Models;
+@using RSFrontEnd.Clients; 
+@rendermode InteractiveServer
 
 <div class="container">
 <div class="row">
@@ -6,10 +8,9 @@
 @foreach (var artist in artists)
 {
     <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-    <ArtistSummary artist="artist"></ArtistSummary>
+            <ArtistSummary artist="artist" deleteFunction="DeleteArtist"></ArtistSummary>
     </div>
 }
-
 
 </div>
 </div>
@@ -20,5 +21,17 @@
 
     [Parameter]
     public List<Artist> artists { get; set; }
+
+    public async Task DeleteArtist(int id)
+    {
+        var client = new HttpBackendClient<Artist>($"api/artist/{id}");
+        var response = await client.DeleteRequest();
+        if (response == System.Net.HttpStatusCode.NoContent)
+        {
+            artists = artists.Where(a => a.Id != id).ToList();
+            StateHasChanged();
+        }
+    }
+
 
 }

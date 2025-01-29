@@ -1,15 +1,77 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 @using RSFrontEnd.Models;
+@using RSFrontEnd.Clients;
+@using AuralizeBlazor; 
+@using AuralizeBlazor.Features
+@using AuralizeBlazor.Options
+@using BlazorJS.Attributes
+@using VisualizationMode = AuralizeBlazor.Options.VisualizationMode
 
 <PageTitle>Home</PageTitle>
 
-<h6>We are definitely owned by Apple.</h6>
+<div class="text-center bg-blue-100">
+    <input class="border-4 w-1/3 rounded m-6 p-6 h-8
+               border-blue-300" @bind-value="@SearchText" placeholder="Search by title" @oninput="DynamicSearch" />
+</div>
 
-<RecordDetails/> 
+<div class="text-center bg-blue-100 searchbar">
+    <SearchBar DisplayArtists="@FilteredArtists" ></SearchBar>
+</div>
 
 
+<br/>
+
+<!--
+
+<MudIconButton Title="Fullscreen" OnClick="@(() => _vis.ToggleFullScreen())"/>
+<MudIconButton Title="Picture in picture" OnClick="@(() => _vis.TogglePictureInPicture())" />
+<Auralizer @ref=_vis 
+           ConnectMicrophone="true"
+           InitialPreset="AuralizerPreset.NeonPulse"
+           Features="_myFeatrues"
+           Height="700px">
+</Auralizer>
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1CsMKhwEmNnmvHUuO5nryA?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    
+-->
 
 @code {
+
+    public string SearchText { get; set; } = "";
+
+    public List<Artist> artists { get; set; } = new List<Artist>();
+
+    public List<Artist> FilteredArtists = new List<Artist>(); 
+
+    protected override async Task OnInitializedAsync()
+    {
+        var webclient = new HttpBackendClient<List<Artist>>("api/artist");
+        artists = await webclient.GetRequest();
+    }
+
+    public void DynamicSearch()
+    {
+        Console.WriteLine("Search called");
+        if (SearchText != "" && artists.Count > 0)
+        {
+            FilteredArtists = artists.Where(a => a.Name.ToLower().Contains(SearchText.ToLower())).ToList();
+            Console.WriteLine("Artists filtered");
+        } else 
+        {
+            Console.WriteLine("Artists removed");
+            FilteredArtists = new List<Artist>(); 
+        }
+    }
+
+
+    Auralizer _vis;
+
+    private IVisualizerFeature[] _myFeatrues = new IVisualizerFeature[]
+    {
+        new ShowLogoFeature() {Label = "Welcome to Visual Frequencies"},
+    };
+
 
 }

@@ -1,15 +1,25 @@
 ﻿@using RSFrontEnd.Models; 
 @using RSFrontEnd.Clients;
+
 @inject NavigationManager NavManager
 
-<div class="artist" >
-    <TrashIcon></TrashIcon>
-    <h5>@artist.Name</h5> 
-    <img src="@artist.ImageUrl" width="100%" @onclick="ChangePage" />
 
+<div class="artist">
+    <div @onclick="PopupCall">
+    <TrashIcon></TrashIcon>
+     </div>
+    <h5>@artist.Name</h5> 
+    <div id="popupmain">
+        <Popup @ref="popupRef" Confirm="DeleteItem" />
+    </div>
+    <img src="@artist.ImageUrl" width="100%" @onclick="ChangePage" />
 </div>
 
+
+
 @code {
+
+    public Popup popupRef { get; set; }
 
     [Parameter]
     public Artist artist { get; set;  }
@@ -20,10 +30,20 @@
         NavManager.NavigateTo($"/artists/{artist.Id}");
     }
 
-    public async Task DeleteArtist()
+
+    private void PopupCall()
     {
-        var client = new HttpBackendClient<Artist>($"api/artist/{artist.Id}");
-        var response = await client.DeleteRequest();
+        popupRef.Show("Are you sure you want to delete this?");
     }
+
+
+    [Parameter]
+    public EventCallback<int> deleteFunction { get; set; }
+
+    private async Task DeleteItem()
+    {
+        await deleteFunction.InvokeAsync(artist.Id);
+    }
+
 
 }

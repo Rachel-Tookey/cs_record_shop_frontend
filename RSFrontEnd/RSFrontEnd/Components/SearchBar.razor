@@ -1,0 +1,18 @@
+﻿@using RSFrontEnd.Models; 
+@rendermode InteractiveServer
+
+
+@if (DisplayArtists.Any())
+{
+    @foreach (var ar in DisplayArtists)
+    {
+        <p class="searchbar"><a>@ar.Name</a></p>
+        
+    }
+}
+
+@code {
+
+    [Parameter]
+    public List<Artist> DisplayArtists { get; set; }
+}

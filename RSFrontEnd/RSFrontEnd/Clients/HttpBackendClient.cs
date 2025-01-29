@@ -4,6 +4,7 @@ using System.Text.Json;
 
 namespace RSFrontEnd.Clients
 {
+
     public class HttpBackendClient<T>
     {
         public string Url { get; set; }
@@ -67,6 +68,8 @@ namespace RSFrontEnd.Clients
             }
 
         }
+
+
 
 
     }
