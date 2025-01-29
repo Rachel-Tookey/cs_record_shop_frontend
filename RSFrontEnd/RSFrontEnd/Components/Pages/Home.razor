@@ -7,56 +7,88 @@
 @using AuralizeBlazor.Options
 @using BlazorJS.Attributes
 @using VisualizationMode = AuralizeBlazor.Options.VisualizationMode
+@using FuzzySharp;
 
 <PageTitle>Home</PageTitle>
 
 <div class="text-center bg-blue-100">
-    <input class="border-4 w-1/3 rounded m-6 p-6 h-8
-               border-blue-300" @bind-value="@SearchText" placeholder="Search by title" @oninput="DynamicSearch" />
+    <div class="relative w-1/3 mx-auto">
+        
+    <input class="border-4 w-1/3 rounded m-6 p-6 h-8 border-blue-300" @bind="SearchText" @bind:event="oninput" placeholder="Search by Artist"/>
+
+    @if (FilteredArtists.Any())
+    {
+        <div class="mx-auto" style="width: 33%;">
+
+            <div class=" list-group searchresults">
+
+                @foreach (var ar in FilteredArtists)
+                {
+                    <a class="searchresults list-group-item list-group-item-action">@ar.Name</a>
+                }
+            </div>
+        </div>
+
+    }
+    </div>
 </div>
 
-<div class="text-center bg-blue-100 searchbar">
-    <SearchBar DisplayArtists="@FilteredArtists" ></SearchBar>
+<div class="test">
+    
+    <p>Pokem ipsum dolor sit amet Exeggutor Kecleon Wing Attack Doduo Red Unown. Sunt in culpa Drilbur Calcium Hoenn Shieldon Wynaut Charizard. Growl Venonat Scolipede Espeon Charizard Barboach Hidden Machine. Duis aute irure dolor in reprehenderit in voluptate they're comfy and easy to wear Onix what kind of Pokemon are you Fog Badge Ampharos Noctowl. Pewter City Marill Slakoth Bronzong Rattata Treecko Cottonee.
+        Pokem ipsum dolor sit amet Exeggutor Kecleon Wing Attack Doduo Red Unown. Sunt in culpa Drilbur Calcium Hoenn Shieldon Wynaut Charizard. Growl Venonat Scolipede Espeon Charizard Barboach Hidden Machine. Duis aute irure dolor in reprehenderit in voluptate they're comfy and easy to wear Onix what kind of Pokemon are you Fog Badge Ampharos Noctowl. Pewter City Marill Slakoth Bronzong Rattata Treecko Cottonee.
+        Pokem ipsum dolor sit amet Exeggutor Kecleon Wing Attack Doduo Red Unown. Sunt in culpa Drilbur Calcium Hoenn Shieldon Wynaut Charizard. Growl Venonat Scolipede Espeon Charizard Barboach Hidden Machine. Duis aute irure dolor in reprehenderit in voluptate they're comfy and easy to wear Onix what kind of Pokemon are you Fog Badge Ampharos Noctowl. Pewter City Marill Slakoth Bronzong Rattata Treecko Cottonee.
+        Pokem ipsum dolor sit amet Exeggutor Kecleon Wing Attack Doduo Red Unown. Sunt in culpa Drilbur Calcium Hoenn Shieldon Wynaut Charizard. Growl Venonat Scolipede Espeon Charizard Barboach Hidden Machine. Duis aute irure dolor in reprehenderit in voluptate they're comfy and easy to wear Onix what kind of Pokemon are you Fog Badge Ampharos Noctowl. Pewter City Marill Slakoth Bronzong Rattata Treecko Cottonee.</p>
+    
 </div>
 
-
-<br/>
-
-<!--
-
-<MudIconButton Title="Fullscreen" OnClick="@(() => _vis.ToggleFullScreen())"/>
-<MudIconButton Title="Picture in picture" OnClick="@(() => _vis.TogglePictureInPicture())" />
-<Auralizer @ref=_vis 
-           ConnectMicrophone="true"
-           InitialPreset="AuralizerPreset.NeonPulse"
-           Features="_myFeatrues"
-           Height="700px">
-</Auralizer>
+@* *@
+@* <MudIconButton Title="Fullscreen" OnClick="@(() => _vis.ToggleFullScreen())"/> *@
+@* <MudIconButton Title="Picture in picture" OnClick="@(() => _vis.TogglePictureInPicture())" /> *@
+@* <Auralizer @ref=_vis  *@
+@*            ConnectMicrophone="true" *@
+@*            InitialPreset="AuralizerPreset.NeonPulse" *@
+@*            Features="_myFeatrues" *@
+@*            Height="700px"> *@
+@* </Auralizer> *@
 
 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1CsMKhwEmNnmvHUuO5nryA?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    
--->
+
 
 @code {
+    
+    private string searchText = "";
+    
+    private string SearchText
+    {
+        get => searchText;
+        set
+        {
+            searchText = value;
+            DynamicSearch(); 
+        }
+    }
+    
 
-    public string SearchText { get; set; } = "";
-
-    public List<Artist> artists { get; set; } = new List<Artist>();
+    public List<Artist> artists { get; set; } = new List<Artist>() { new Artist(){ Name = "Amy Winehouse"}, new Artist(){ Name = "Dolly Parton"}, new Artist(){ Name ="Amy McDonald"} } ;
 
     public List<Artist> FilteredArtists = new List<Artist>(); 
 
-    protected override async Task OnInitializedAsync()
-    {
-        var webclient = new HttpBackendClient<List<Artist>>("api/artist");
-        artists = await webclient.GetRequest();
-    }
-
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     var webclient = new HttpBackendClient<List<Artist>>("api/artist");
+    //     artists = await webclient.GetRequest();
+    // }
+    
+    
     public void DynamicSearch()
     {
         Console.WriteLine("Search called");
         if (SearchText != "" && artists.Count > 0)
         {
-            FilteredArtists = artists.Where(a => a.Name.ToLower().Contains(SearchText.ToLower())).ToList();
+            FilteredArtists = artists
+                .Where(a => Fuzz.PartialRatio(a.Name, SearchText) > 60) 
+                .ToList();
             Console.WriteLine("Artists filtered");
         } else 
         {
