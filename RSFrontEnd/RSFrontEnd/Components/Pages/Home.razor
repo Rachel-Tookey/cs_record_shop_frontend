@@ -11,6 +11,7 @@
 
 <PageTitle>Home</PageTitle>
 
+<!--- pull out into component? will search render correctly? --> 
 <div class="text-center bg-blue-100">
     <input class="border-4 w-1/3 rounded m-6 p-6 h-8 border-blue-300" @bind="SearchText" @bind:event="oninput" placeholder="Search by Artist"/>
     @if (FilteredArtists.Any())
@@ -30,31 +31,13 @@
 
 <br/>
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
-            <div class="homeartistdisplay">
-                <p id="playing">Now Playing:</p>
-                <p>Back to Black, Amy Winehouse</p>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
-            <div class="homeartistdisplay">
-                <iframe id="spotify" src="https://open.spotify.com/embed/track/30FURVTCpbKyykjSEQzGkH" width="400" height="100" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
-            <div class="homeartistdisplay">
-                <p id="playing">Next song ⏭️</p>
-                <p id="smalltext">Click for a new song or select from the search bar</p>
-            </div>
-        </div>
-    </div>
-</div>
+<!--- generate random artist & provide as a parameter -->
+<!--- onclick will need to be event callback --->
+<HomeArtistDisplay></HomeArtistDisplay>
 
 <br/>
 
-
+<!--- this only works on windows browsers using microphone? --->
 <MudIconButton Title="Picture in picture" OnClick="@(() => _vis.TogglePictureInPicture())" />
 <Auralizer @ref=_vis
            ConnectMicrophone="true"
@@ -93,16 +76,13 @@
     
     public void DynamicSearch()
     {
-        Console.WriteLine("Search called");
         if (SearchText != "" && artists.Count > 0)
         {
             FilteredArtists = artists
-                .Where(a => Fuzz.PartialRatio(a.Name, SearchText) > 60) 
+                .Where(a => Fuzz.PartialRatio(a.Name, SearchText) > 60)  
                 .ToList();
-            Console.WriteLine("Artists filtered");
         } else 
         {
-            Console.WriteLine("Artists removed");
             FilteredArtists = new List<Artist>(); 
         }
     }
@@ -112,6 +92,7 @@
 
     private IVisualizerFeature[] _myFeatrues = new IVisualizerFeature[]
     {
+        // change label so it is dynamically updated with new artist name?
         new ShowLogoFeature() {Label = "Back to Black"},
     };
 
