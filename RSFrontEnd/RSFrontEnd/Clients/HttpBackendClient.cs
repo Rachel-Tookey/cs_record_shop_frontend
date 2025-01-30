@@ -12,7 +12,7 @@ namespace RSFrontEnd.Clients
         public HttpClient client { get; init; }
 
         public HttpBackendClient(string endpoint) { 
-            Url = "https://localhost:7278/" + endpoint;
+            Url = "http://localhost:5027/" + endpoint;
             client = new HttpClient(); 
         }
 

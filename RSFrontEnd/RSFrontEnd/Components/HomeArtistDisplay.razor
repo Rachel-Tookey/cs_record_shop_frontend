@@ -1,3 +1,4 @@
+@using RSFrontEnd.Models;
 @rendermode InteractiveAuto
 
 <div class="container">
@@ -5,16 +6,16 @@
         <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
             <div class="homeartistdisplay">
                 <p id="playing">Now Playing ▶️</p>
-                <p>Back to Black, Amy Winehouse</p>
+                <p>@DisplayedSong.Name by @DisplayedSong.Artist.Name</p>
             </div>
         </div>
         <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
             <div class="homeartistdisplay">
-                <iframe id="spotify" src="https://open.spotify.com/embed/track/30FURVTCpbKyykjSEQzGkH?utm_source=generator&theme=0" width="400" height="100" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <iframe id="spotify" src="@DisplayedSong.SpotifyUrl" width="400" height="100" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             </div>
         </div>
         <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
-            <div class="homeartistdisplay">
+            <div class="homeartistdisplay" @onclick="ChangeSong">
                 <p id="playing">Next song ⏭️</p>
                 <p id="smalltext">Click for a new song or select from the search bar</p>
             </div>
@@ -24,6 +25,16 @@
 
 @code {
 
-    
+    [Parameter]
+    public Song DisplayedSong { get; set; }
 
+    [Parameter]
+    public EventCallback NewRandomSong { get; set; }
+    
+    private async Task ChangeSong()
+    {
+        await NewRandomSong.InvokeAsync();
+    }
+
+    
 }

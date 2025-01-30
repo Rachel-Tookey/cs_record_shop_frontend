@@ -10,7 +10,7 @@ namespace RSFrontEnd.Models
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("albums")]
-        public List<Album> Albums { get; set; }
+        [JsonPropertyName("songs")]
+        public List<Song> Songs { get; set; }
     }
 }

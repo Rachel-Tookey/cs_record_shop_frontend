@@ -27,8 +27,8 @@ namespace RSFrontEnd.Models
         public int YearsActive { get; set; }
 
 
-        [JsonPropertyName("albums")]
-        public List<Album> Albums { get; set; }
+        [JsonPropertyName("songs")]
+        public List<Song> Songs { get; set; }
 
     }
 }

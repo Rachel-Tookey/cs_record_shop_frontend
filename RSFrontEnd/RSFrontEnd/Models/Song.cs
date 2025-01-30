@@ -2,7 +2,7 @@
 
 namespace RSFrontEnd.Models
 {
-    public class Album
+    public class Song
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -18,7 +18,10 @@ namespace RSFrontEnd.Models
 
         [JsonPropertyName("description")]
         public string Description { get; set; }
-
+        
+        [JsonPropertyName("spotifyurl")]
+        public string SpotifyUrl { get; set; }
+        
         [JsonPropertyName("releasedate")]
         public DateTime ReleaseDate { get; set; }
 

@@ -4,24 +4,21 @@
 @using RSFrontEnd.Clients;
 @using AuralizeBlazor; 
 @using AuralizeBlazor.Features
-@using AuralizeBlazor.Options
-@using BlazorJS.Attributes
-@using VisualizationMode = AuralizeBlazor.Options.VisualizationMode
 @using FuzzySharp;
 
 <PageTitle>Home</PageTitle>
 
 <!--- pull out into component? will search render correctly? --> 
 <div class="text-center bg-blue-100">
-    <input class="border-4 w-1/3 rounded m-6 p-6 h-8 border-blue-300" @bind="SearchText" @bind:event="oninput" placeholder="Search by Artist"/>
-    @if (FilteredArtists.Any())
+    <input class="border-4 w-1/3 rounded m-6 p-6 h-8 border-blue-300" @bind="SearchText" @bind:event="oninput" placeholder="Search by Song"/>
+    @if (FilteredSongs.Any())
     {
         <div class="searchwrapper">
             <div class="mx-auto" style="width: 27%; position: absolute">
                 <div class="list-group searchresults" > 
-                    @foreach (var ar in FilteredArtists)
+                    @foreach (var ar in FilteredSongs)
                     {
-                        <a class="searchresults list-group-item list-group-item-action">@ar.Name</a>
+                        <a class="searchresults list-group-item list-group-item-action" @onclick="() => UpdateChoice(ar.Id)">@ar.Name</a>
                     }
                 </div>
             </div>
@@ -31,9 +28,15 @@
 
 <br/>
 
-<!--- generate random artist & provide as a parameter -->
-<!--- onclick will need to be event callback --->
-<HomeArtistDisplay></HomeArtistDisplay>
+@if (randomSong == null)
+{
+    <Loader></Loader>
+}
+else
+{
+    <HomeArtistDisplay DisplayedSong="@randomSong" NewRandomSong="@UpdateRandom"></HomeArtistDisplay>
+}
+
 
 <br/>
 
@@ -61,33 +64,49 @@
             DynamicSearch(); 
         }
     }
+
+    public Song randomSong { get; set; } 
     
+    public List<Song> songs { get; set; } = new List<Song>() ;
 
-    public List<Artist> artists { get; set; } = new List<Artist>() { new Artist(){ Name = "Amy Winehouse"}, new Artist(){ Name = "Dolly Parton"}, new Artist(){ Name ="Amy McDonald"} } ;
+    public List<Song> FilteredSongs { get; set; } = new List<Song>(); 
 
-    public List<Artist> FilteredArtists = new List<Artist>(); 
-
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     var webclient = new HttpBackendClient<List<Artist>>("api/artist");
-    //     artists = await webclient.GetRequest();
-    // }
+    protected override async Task OnInitializedAsync()
+    {
+        var webclient = new HttpBackendClient<List<Song>>("api/song");
+        songs = await webclient.GetRequest();
+        Random rn = new Random();
+        randomSong = songs[rn.Next(0, songs.Count)]; 
+    }
     
     
     public void DynamicSearch()
     {
-        if (SearchText != "" && artists.Count > 0)
+        if (!string.IsNullOrEmpty(SearchText) && songs != null && songs.Count > 0)
         {
-            FilteredArtists = artists
+            FilteredSongs = songs
                 .Where(a => Fuzz.PartialRatio(a.Name, SearchText) > 60)  
                 .ToList();
         } else 
         {
-            FilteredArtists = new List<Artist>(); 
+            FilteredSongs = new (); 
         }
     }
 
+    public void UpdateRandom()
+    {
+        Random rn = new Random();
+        randomSong = songs[rn.Next(0, songs.Count)]; 
+    }
 
+    public void UpdateChoice(int id)
+    {
+        Console.WriteLine("Called updated choice");
+        randomSong = songs.Where(s => s.Id == id).FirstOrDefault();
+        SearchText = ""; 
+    }
+    
+    
     Auralizer _vis;
 
     private IVisualizerFeature[] _myFeatrues = new IVisualizerFeature[]
