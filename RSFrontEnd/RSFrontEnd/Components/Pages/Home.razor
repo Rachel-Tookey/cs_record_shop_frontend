@@ -28,22 +28,41 @@
     }
 </div>
 
+<br/>
 
-<p>
-    .NET MAUI single project takes the platform-specific development experiences you typically encounter while developing apps and abstracts them into a single shared project that can target Android, iOS, macOS, and Windows.
-    .NET MAUI single project provides a simplified and consistent cross-platform development experience, regardless of the platforms being targeted. .NET MAUI single project provides the following features:
-</p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
+            <div class="homeartistdisplay">
+                <p id="playing">Now Playing:</p>
+                <p>Back to Black, Amy Winehouse</p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
+            <div class="homeartistdisplay">
+                <iframe id="spotify" src="https://open.spotify.com/embed/track/30FURVTCpbKyykjSEQzGkH" width="400" height="100" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-4">
+            <div class="homeartistdisplay">
+                <p id="playing">Next song ⏭️</p>
+                <p id="smalltext">Click for a new song or select from the search bar</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-<MudIconButton Title="Fullscreen" OnClick="@(() => _vis.ToggleFullScreen())"/>
+<br/>
+
+
 <MudIconButton Title="Picture in picture" OnClick="@(() => _vis.TogglePictureInPicture())" />
 <Auralizer @ref=_vis
            ConnectMicrophone="true"
            InitialPreset="AuralizerPreset.NeonPulse"
            Features="_myFeatrues"
-           Height="700px">
+           Height="470px">
 </Auralizer>
 
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1CsMKhwEmNnmvHUuO5nryA?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
 
 @code {
@@ -93,7 +112,7 @@
 
     private IVisualizerFeature[] _myFeatrues = new IVisualizerFeature[]
     {
-        new ShowLogoFeature() {Label = "Welcome to Visual Frequencies"},
+        new ShowLogoFeature() {Label = "Back to Black"},
     };
 
 

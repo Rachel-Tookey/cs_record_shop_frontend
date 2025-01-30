@@ -86,10 +86,10 @@ h1:focus {
     position: relative;
 }
 
-    .artist:hover {
-        transform: scale(1.01);
-        box-shadow: 5px 5px 5px #FF6984;
-    }
+.artist:hover {
+    transform: scale(1.01);
+    box-shadow: 5px 5px 5px #FF6984;
+ }
 
 
 h6 {
@@ -151,4 +151,35 @@ h6 {
     top: 15%;  
     left: 36.5%;
     width: 100%;
+}
+
+.homeartistdisplay {
+    padding: 10px;
+    border: 1px double #ccc;
+    border-radius: 25px;
+    height: 100px;
+    text-align: center;
+}
+
+.homeartistdisplay:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+    box-shadow: 2px 2px 2px #c404c4;
+}
+
+#spotify{
+    margin-left: auto;
+    padding-right: 7px;
+    height: 100%;
+}
+
+#playing {
+    font-style: italic;
+    font-weight: bold;
+    font-size: 20px;
+    color: #c404c4; 
+}
+
+#smalltext {
+    font-size: 12px;
 }
