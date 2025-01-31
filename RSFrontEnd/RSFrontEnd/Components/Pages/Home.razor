@@ -5,13 +5,14 @@
 @using AuralizeBlazor; 
 @using AuralizeBlazor.Features
 @using FuzzySharp;
+@using Nextended.Core.Extensions
 
 
 <PageTitle>Home</PageTitle>
 
 <!--- pull out into component? will search render correctly? --> 
 <div class="text-center bg-blue-100">
-    <input class="border-4 w-1/3 rounded m-6 p-6 h-8 border-blue-300" @bind="SearchText" @bind:event="oninput" placeholder="Search by Song"/>
+    <input class="border-4 rounded m-6 p-6 h-8 border-blue-300" style="width: 410px;"  @bind="SearchText" @bind:event="oninput" placeholder="Search by song or artist"/>
     @if (FilteredSongs.Any())
     {
         <div class="searchwrapper">
@@ -86,9 +87,9 @@ else
         if (!string.IsNullOrEmpty(SearchText) && songs != null && songs.Count > 0)
         {
             FilteredSongs = songs
-                .Where(a => Fuzz.PartialRatio(a.Name, SearchText) > 60)
-                .OrderBy(a => Fuzz.PartialRatio(a.Name, SearchText))
-                .ToList();
+                .Where(a => Fuzz.PartialRatio(a.Name.ToLower(), SearchText.ToLower()) > 60 || Fuzz.PartialRatio(a.Artist.Name.ToLower(), SearchText.ToLower()) > 90)
+                .OrderByDescending(a => Fuzz.PartialRatio(a.Name.ToLower(), SearchText.ToLower()))
+                .Take(6).ToList();
         } else 
         {
             FilteredSongs = new (); 

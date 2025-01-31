@@ -10,7 +10,7 @@
     <div id="popupmain">
         <Popup @ref="popupRef" Confirm="DeleteItem" />
     </div>
-    <img src="@artist.ImageUrl" width="100%" @onclick="ChangePage" />
+    <img src="@artist.ImageUrl"  @onclick="ChangePage" />
 </div>
 
 
@@ -31,7 +31,7 @@
 
     private void PopupCall()
     {
-        popupRef.Show("Are you sure you want to delete this?");
+        popupRef.Show("This cannot be undone.", "Are you sure?");
     }
 
 

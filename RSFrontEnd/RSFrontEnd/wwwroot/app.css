@@ -57,9 +57,9 @@ h1:focus {
     color: white;
 }
 
-    .blazor-error-boundary::after {
+.blazor-error-boundary::after {
         content: "An error has occurred."
-    }
+}
 
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
@@ -79,7 +79,7 @@ h1:focus {
     border: 1px double #ccc;
     border-radius: 25px;
     margin: 10px;
-    height: 300px;
+    height: 350px;
     overflow: hidden;
     position: relative;
 }
@@ -98,13 +98,17 @@ h6 {
 .artist img {
     position: relative;
     cursor: pointer;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
 }
 
 #trash {
     position: absolute;
     right: 0;
     top: 0;
-    padding: 1px;
+    padding-top: 1px;
+    padding-right: 15px; 
     cursor: pointer;
 }
 
@@ -117,11 +121,12 @@ h6 {
 #popup a {
     color: #FF0000;
     cursor: pointer;
+    font-style: italic;
+    font-weight: bold;
 }
 
 
 .searchresults {
-    max-height: 200px; 
     overflow-y: auto;
     top: 0; 
     left: 0;
@@ -183,5 +188,5 @@ h6 {
 }
 
 .artist h5 {
-    padding: 2px;
+    padding-left: 20px;
 }
