@@ -13,8 +13,8 @@ p {
     color: #1db4a9;
 }
 
-.pink {
-    color: #FF6984;
+.black {
+    color: black;
 }
 
 a, .btn-link {
@@ -76,10 +76,8 @@ h1:focus {
     }
 
 .artist {
-    border-radius: 5px;
-    border-width: 1px;
-    border-style: double;
-    border-color: #FF6984;
+    border: 1px double #ccc;
+    border-radius: 25px;
     margin: 10px;
     height: 300px;
     overflow: hidden;
@@ -88,7 +86,7 @@ h1:focus {
 
 .artist:hover {
     transform: scale(1.01);
-    box-shadow: 5px 5px 5px #FF6984;
+    box-shadow: 2px 2px 2px #c404c4;
  }
 
 
@@ -117,7 +115,7 @@ h6 {
 }
 
 #popup a {
-    color: #1db4a9;
+    color: #FF0000;
     cursor: pointer;
 }
 
@@ -182,4 +180,8 @@ h6 {
 
 #smalltext {
     font-size: 12px;
+}
+
+.artist h5 {
+    padding: 2px;
 }

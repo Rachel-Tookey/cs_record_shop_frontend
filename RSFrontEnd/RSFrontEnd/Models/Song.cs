@@ -25,8 +25,6 @@ namespace RSFrontEnd.Models
         [JsonPropertyName("releasedate")]
         public DateTime ReleaseDate { get; set; }
 
-        [JsonPropertyName("genres")]
-        public List<Genre> Genres { get; set; }
 
 
     }

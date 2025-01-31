@@ -6,6 +6,7 @@
 @using AuralizeBlazor.Features
 @using FuzzySharp;
 
+
 <PageTitle>Home</PageTitle>
 
 <!--- pull out into component? will search render correctly? --> 
@@ -85,7 +86,8 @@ else
         if (!string.IsNullOrEmpty(SearchText) && songs != null && songs.Count > 0)
         {
             FilteredSongs = songs
-                .Where(a => Fuzz.PartialRatio(a.Name, SearchText) > 60)  
+                .Where(a => Fuzz.PartialRatio(a.Name, SearchText) > 60)
+                .OrderBy(a => Fuzz.PartialRatio(a.Name, SearchText))
                 .ToList();
         } else 
         {
@@ -101,7 +103,6 @@ else
 
     public void UpdateChoice(int id)
     {
-        Console.WriteLine("Called updated choice");
         randomSong = songs.Where(s => s.Id == id).FirstOrDefault();
         SearchText = ""; 
     }

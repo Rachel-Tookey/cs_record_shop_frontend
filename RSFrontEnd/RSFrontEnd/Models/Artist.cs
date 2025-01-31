@@ -29,6 +29,10 @@ namespace RSFrontEnd.Models
 
         [JsonPropertyName("songs")]
         public List<Song> Songs { get; set; }
+        
+        
+        [JsonPropertyName("genres")]
+        public List<Genre> Genres { get; set; }
 
     }
 }
