@@ -101,6 +101,7 @@ h6 {
     object-fit: cover;
     height: 100%;
     width: 100%;
+    filter: hue-rotate(180deg)
 }
 
 #trash {
@@ -188,5 +189,7 @@ h6 {
 }
 
 .artist h5 {
+    font-size: 20px;
+    color: #c404c4;
     padding-left: 20px;
 }
