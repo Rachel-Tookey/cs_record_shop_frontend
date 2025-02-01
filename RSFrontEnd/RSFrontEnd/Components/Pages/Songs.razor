@@ -1,0 +1,20 @@
+@page "/songs/{Id:int?}"
+
+@* <div class="container"> *@
+@*     <div class="row"> *@
+@* *@
+@*         <Virtualize Items="songs" Context="song"> *@
+@*             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3"> *@
+@*                 <SongSummary artist="song" deleteFunction="DeleteSong"></SongSummary> *@
+@*             </div> *@
+@*         </Virtualize> *@
+@* *@
+@*     </div> *@
+@* </div> *@
+
+@code {
+
+    [Parameter]
+    public int? Id { get; set; }
+
+}
