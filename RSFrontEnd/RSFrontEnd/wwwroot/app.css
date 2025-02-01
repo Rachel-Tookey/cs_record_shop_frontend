@@ -212,8 +212,23 @@ h6 {
     box-shadow: 2px 2px 2px #c404c4;
 }
 
+#pinkheader {
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+    font-size: 20px;
+    color: #c404c4;
+}
+
+
+
 @media only screen and (max-width: 600px) {
     .addartist {
         margin-left: 0;
     }
+}
+
+#newartist:hover {
+    background-color: #c404c4;
+    color: whitesmoke;
 }

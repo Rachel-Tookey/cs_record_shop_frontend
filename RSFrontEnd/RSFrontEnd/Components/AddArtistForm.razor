@@ -1,65 +1,105 @@
-﻿@using RSFrontEnd.Models;
+﻿@using Nextended.Core.Extensions
+@using RSFrontEnd.Models;
 @using RSFrontEnd.Clients;
+@using TagLib
 
 
-<h6>@Success</h6>
+<EditForm FormName="AddArtist" Model="@artist" OnInvalidSubmit="(() => HandleInvalidSubmit())" OnValidSubmit="HandleValidSubmit">
+        <h6 style="color: #FF0000">@Success</h6>
+        <AntiForgeryToken/>
+        <DataAnnotationsValidator/>
 
-<EditForm FormName="AddArtist" Model="@artist" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
-    
-    <AntiForgeryToken />
-    <DataAnnotationsValidator />
+        <div>
+            <div class="form-group">
+            <label for="InputName">Name:</label>
+            <InputText id="InputName" class="form-control" @bind-Value="@artist.Name"/>
+            <ValidationMessage For="@(() => artist.Name)"/>
+            </div>
+        </div>
 
-    <div>
-        <label for="InputName">Name:</label>
-            <InputText id="InputName" @bind-Value="@artist.Name"/> 
-            <ValidationMessage For="@(() => artist.Name)" />
-    </div>
+        <br/>
+        <div>
+            <div class="form-group">
+            <label for="InputUrl" >Image url:</label>
+            <InputText id="InputUrl" class="form-control" @bind-Value="@artist.ImageUrl"/>
+            <ValidationMessage  For="@(() => artist.ImageUrl)"/>
+        </div>
 
-    <br />
-    <div>
-        <label for="InputUrl">Image (url):</label>
-        <InputText id="InputUrl" @bind-Value="@artist.ImageUrl"/>
-        <ValidationMessage For="@(() => artist.ImageUrl)" />
-    </div>
-    
-    <div>
-        <img src="@artist.ImageUrl" @onerror="@(() => ImageValid = false)" @onload="(() => ImageValid = true)" />
-    </div>
-
-
-    <div>
-        <label for="YearsActive">Years Active:</label>
-            <InputNumber id="YearsActive" @bind-Value="@artist.YearsActive"/>
-        <ValidationMessage For="@(() => artist.YearsActive)" />
-    </div>
-
-    <br />
+        </div>
 
     <div>
-        <button type="submit">Submit</button>
-    </div>
+            <img src="@artist.ImageUrl" @onerror="@(() => ImageValid = false)" @onload="(() => ImageValid = true)" style="height:0; visibility: hidden"/>
+        </div>
 
 
+        <div>
+            <div class="form-group">
+            <label for="YearsActive">Years active:</label>
+            <InputNumber id="YearsActive" class="form-control" @bind-Value="@artist.YearsActive"/>
+            <ValidationMessage For="@(() => artist.YearsActive)"/>
+        </div>
+        </div>
+
+        <br/>
+        
+        <div>
+            @if (Genres.Count > 0)
+            {
+                <label>
+                    Select any genres: 
+                    Press Ctl for 2+
+                    <select @bind="SelectedGenres" multiple>
+                        @foreach (var g in Genres)
+                        {
+                            <option value="@g.Id">@g.Name</option>
+                        }
+                    </select>
+                </label>
+                
+            }
+           
+
+        </div>
+        
+        
+        <br/>
+    <div>
+            <button id="newartist" class="btn btn-light" type="submit">Submit</button>
+        </div>
+        
 </EditForm>
 
 
 @code {
-
+    
     public Artist artist { get; set; } = new Artist(); 
 
     public string Success { get; set; }
 
-    public bool ImageValid { get; set;  } 
-
-    public void HandleInvalidSubmit()
+    public bool ImageValid { get; set;  }
+    
+    public List<Genre> Genres { get; set; } = new();
+    
+    public int[] SelectedGenres { get; set; } = [];
+    
+    protected override async Task OnInitializedAsync()
     {
-        Success = "Some fields are invalid";
+        var webclient = new HttpBackendClient<List<Genre>>("api/artist/genre");
+        Genres = await webclient.GetRequest();
+    }
+ 
+    public void HandleInvalidSubmit(string message = null)
+    {
+        message = message is null ? "Some fields are invalid" : message; 
+        Success = message;
     }
 
 
     public async Task HandleValidSubmit()
     {
-        if (ImageValid) {
+        if (ImageValid)
+        {
+            artist.Genres = Genres.Where(g => SelectedGenres.Contains(g.Id)).ToList(); 
             var client = new HttpBackendClient<Artist>("api/artist");
             var response = await client.PostRequest(artist); 
             if (response == System.Net.HttpStatusCode.Created)
@@ -72,12 +112,10 @@
             }
         } else
         {
-            HandleInvalidSubmit(); 
+            HandleInvalidSubmit("Image Url is invalid"); 
         }
 
     }
-
-
 
 
 }
