@@ -1,0 +1,104 @@
+@using RSFrontEnd.Models;
+@using RSFrontEnd.Clients;
+
+<EditForm FormName="AddArtist" Model="@song" OnInvalidSubmit="(() => HandleInvalidSubmit())" OnValidSubmit="HandleValidSubmit">
+    <h6 style="color: #FF0000">@Success</h6>
+    <AntiForgeryToken/>
+    <DataAnnotationsValidator/>
+
+    <div>
+        <div class="form-group">
+            <label for="InputName">Title:</label>
+            <InputText id="InputName" class="form-control" @bind-Value="@song.Name"/>
+            <ValidationMessage For="@(() => song.Name)"/>
+        </div>
+    </div>
+
+    <br/>
+
+    <div>
+        <div class="form-group">
+            <label for="InputName">Artist:</label>
+            <InputSelect class="form-select" @bind-Value="@song.ArtistId">
+                <option selected value=""></option>
+                @foreach (var a in artists)
+                {
+                    <option value="@a.Id">@a.Name</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+
+    <br/>
+
+
+    <div>
+        <div class="form-group">
+            <label for="InputName">Description:</label>
+            <InputText id="InputName" class="form-control" @bind-Value="@song.Description"/>
+            <ValidationMessage For="@(() => song.Description)"/>
+        </div>
+    </div>
+
+    <br/>
+
+    <div>
+        <div class="form-group">
+            <label for="InputName">Spotify Url:</label>
+            <InputText id="InputName" class="form-control" @bind-Value="@song.SpotifyUrl"/>
+            <ValidationMessage For="@(() => song.SpotifyUrl)"/>
+        </div>
+    </div>
+
+    <br/>
+    
+    <div>
+        <div class="form-group">
+            <label for="datereleased">Date Released:</label>
+            <InputDate id="datereleased" TValue="DateTime" @bind-Value="@song.ReleaseDate" Placeholder="Enter Date"/>
+            <ValidationMessage For="@(() => song.ReleaseDate)"/>
+        </div>
+    </div>
+
+    <br/>
+
+    <div>
+        <button id="newartist" class="btn btn-light" type="submit">Submit</button>
+    </div>
+
+</EditForm>
+
+
+@code {
+    public Song song { get; set; } = new Song(); 
+
+    public string Success { get; set; }
+
+    public List<Artist> artists { get; set; } = new List<Artist>(); 
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var webclient = new HttpBackendClient<List<Artist>>("api/artist/");
+        artists = await webclient.GetRequest();
+        song.ReleaseDate = DateTime.Today;
+    }
+    
+    public void HandleInvalidSubmit(string message = null)
+    {
+        message = message is null ? "Some fields are invalid" : message; 
+        Success = message;
+    }
+    
+    public async Task HandleValidSubmit()
+    {
+        var client = new HttpBackendClient<Song>("api/song");
+        var response = await client.PostRequest(song); 
+        if (response == System.Net.HttpStatusCode.Created){
+                Success = "‧\u208a\u02da\ud83d\udd87\ufe0f\u2729 \u208a song added \u02da\ud83c\udfa7\u22b9\u2661";
+                song = new Song(); 
+        } else {
+                Success = "Something went wrong! Please try again later";
+        }
+    }
+
+}
