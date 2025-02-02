@@ -237,7 +237,7 @@ h6 {
     border: 1px double #ccc;
     border-radius: 25px;
     margin: 10px;
-    height: 200px;
+    height: 350px;
     overflow: hidden;
     position: relative;
 }
@@ -249,10 +249,18 @@ h6 {
 
 
 
-.song h5 {
-    font-size: 14px;
+.song h6 {
+    font-size: 8px;
     color: #c404c4;
     padding-left: 20px;
+}
+
+.song img {
+    padding-right: 20px; 
+    object-fit: cover;
+    height: 40px;
+    width: 40%;
+    filter: hue-rotate(180deg)
 }
 
 .filter {
@@ -289,4 +297,11 @@ h6 {
     position: sticky;
     top: 0;
     z-index: 1000;
+}
+
+#spotifysong {
+    height: 30%;
+    width: 100%;
+    bottom: 0;
+    position: absolute;
 }
