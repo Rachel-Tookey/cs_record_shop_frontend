@@ -43,18 +43,19 @@
         <br/>
         
         <div>
-            @if (Genres.Count > 0)
+            @if (Genres != null)
             {
                 <label>
                     Select any genres: 
-                    Press Ctl for 2+
-                    <select @bind="SelectedGenres" multiple>
+                    <select class="form-select"  @bind="SelectedGenres" multiple>
                         @foreach (var g in Genres)
                         {
                             <option value="@g.Id">@g.Name</option>
                         }
                     </select>
+                    Press Ctl for 2+
                 </label>
+                
                 
             }
            
@@ -63,7 +64,7 @@
         
         
         <br/>
-    <div>
+        <div>
             <button id="newartist" class="btn btn-light" type="submit">Submit</button>
         </div>
         

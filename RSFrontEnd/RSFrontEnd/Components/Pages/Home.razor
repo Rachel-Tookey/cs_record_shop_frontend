@@ -18,9 +18,9 @@
         <div class="searchwrapper">
             <div class="mx-auto" style="width: 27%; position: absolute">
                 <div class="list-group searchresults" > 
-                    @foreach (var ar in FilteredSongs)
+                    @foreach (var song in FilteredSongs)
                     {
-                        <a class="searchresults list-group-item list-group-item-action" @onclick="() => UpdateChoice(ar.Id)">@ar.Name</a>
+                        <a class="searchresults list-group-item list-group-item-action" @onclick="() => UpdateChoice(song.Id)">@song.Name</a>
                     }
                 </div>
             </div>
@@ -63,7 +63,7 @@ else
         set
         {
             searchText = value;
-            DynamicSearch(); 
+            DynamicSearchAsync(); 
         }
     }
 
@@ -75,36 +75,34 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var webclient = new HttpBackendClient<List<Song>>("api/song");
-        songs = await webclient.GetRequest();
-        Random rn = new Random();
-        randomSong = songs[rn.Next(0, songs.Count)]; 
+        var webclient = new HttpBackendClient<Song>("api/song/random");
+        randomSong = await webclient.GetRequest();
     }
     
-    
-    public void DynamicSearch()
+    public async Task DynamicSearchAsync()
     {
-        if (!string.IsNullOrEmpty(SearchText) && songs != null && songs.Count > 0)
+        if (!string.IsNullOrEmpty(SearchText))
         {
-            FilteredSongs = songs
-                .Where(a => Fuzz.PartialRatio(a.Name.ToLower(), SearchText.ToLower()) > 60 || Fuzz.PartialRatio(a.Artist.Name.ToLower(), SearchText.ToLower()) > 90)
-                .OrderByDescending(a => Fuzz.PartialRatio(a.Name.ToLower(), SearchText.ToLower()))
-                .Take(6).ToList();
+            var webclient = new HttpBackendClient<List<Song>>($"api/song/homepage?search={SearchText}");
+            FilteredSongs = await webclient.GetRequest();
+
         } else 
         {
             FilteredSongs = new (); 
         }
     }
 
-    public void UpdateRandom()
+    
+    public async Task UpdateRandom()
     {
-        Random rn = new Random();
-        randomSong = songs[rn.Next(0, songs.Count)]; 
+        var webclient = new HttpBackendClient<Song>("api/song/random");
+        randomSong = await webclient.GetRequest();
     }
 
     public void UpdateChoice(int id)
     {
-        randomSong = songs.Where(s => s.Id == id).FirstOrDefault();
+        Console.WriteLine(id);
+        randomSong = FilteredSongs.Where(s => s.Id == id).FirstOrDefault();
         SearchText = ""; 
     }
     
