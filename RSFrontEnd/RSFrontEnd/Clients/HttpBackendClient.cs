@@ -61,6 +61,7 @@ namespace RSFrontEnd.Clients
             try
             {
                 var response = await client.DeleteAsync(Url);
+                Console.WriteLine(response);
                 return response.StatusCode;
             }
             catch

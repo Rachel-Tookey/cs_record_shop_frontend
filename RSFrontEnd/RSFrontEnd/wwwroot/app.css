@@ -232,3 +232,25 @@ h6 {
     background-color: #c404c4;
     color: whitesmoke;
 }
+
+.song {
+    border: 1px double #ccc;
+    border-radius: 25px;
+    margin: 10px;
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.song:hover {
+    transform: scale(1.01);
+    box-shadow: 2px 2px 2px #c404c4;
+}
+
+
+
+.song h5 {
+    font-size: 14px;
+    color: #c404c4;
+    padding-left: 20px;
+}

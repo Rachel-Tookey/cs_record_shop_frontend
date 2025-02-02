@@ -1,0 +1,42 @@
+@using RSFrontEnd.Models
+
+<div class="song">
+    <h5>@song.Name by @song.Artist.Name</h5>
+    <div @onclick="PopupCall">
+        <TrashIcon></TrashIcon>
+    </div>
+    <div id="popupmain">
+        <Popup @ref="popupRef" Confirm="DeleteItem" />
+    </div>
+    <iframe id="spotify" src="@song.SpotifyUrl" width="400" height="75" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+</div>
+
+
+
+@code {
+
+    [Parameter] 
+    public Song song { get; set; }
+    
+    public Popup popupRef { get; set; }
+    
+
+    private void PopupCall()
+    {
+        popupRef.Show("This cannot be undone.", "Are you sure?");
+    }
+
+
+    [Parameter]
+    public EventCallback<int> deleteFunction { get; set; }
+
+    private async Task DeleteItem()
+    {
+        await deleteFunction.InvokeAsync(song.Id);
+    }
+
+    
+
+}
+
+
