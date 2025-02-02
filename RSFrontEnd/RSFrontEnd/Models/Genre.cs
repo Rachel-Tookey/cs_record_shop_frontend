@@ -9,8 +9,8 @@ namespace RSFrontEnd.Models
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
-
-        [JsonPropertyName("artists")]
-        public List<Artist> Artists { get; set; }
+        //
+        // [JsonPropertyName("artists")]
+        // public List<Artist> Artists { get; set; }
     }
 }

@@ -1,7 +1,5 @@
-﻿using RSFrontEnd.Models;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Text.Json; 
+﻿using System.Net;
+
 
 namespace RSFrontEnd.Clients
 {
@@ -61,7 +59,6 @@ namespace RSFrontEnd.Clients
             try
             {
                 var response = await client.DeleteAsync(Url);
-                Console.WriteLine(response);
                 return response.StatusCode;
             }
             catch
