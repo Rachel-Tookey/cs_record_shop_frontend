@@ -233,35 +233,6 @@ h6 {
     color: whitesmoke;
 }
 
-.song {
-    border: 1px double #ccc;
-    border-radius: 25px;
-    margin: 10px;
-    height: 350px;
-    overflow: hidden;
-    position: relative;
-}
-
-.song:hover {
-    transform: scale(1.01);
-    box-shadow: 2px 2px 2px #c404c4;
-}
-
-
-
-.song h6 {
-    font-size: 8px;
-    color: #c404c4;
-    padding-left: 20px;
-}
-
-.song img {
-    padding-right: 20px; 
-    object-fit: cover;
-    height: 40px;
-    width: 40%;
-    filter: hue-rotate(180deg)
-}
 
 .filter {
     height: 100px;
@@ -299,9 +270,44 @@ h6 {
     z-index: 1000;
 }
 
+
+.song {
+    border: 1px double #ccc;
+    border-radius: 25px;
+    margin: 10px;
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+}
+
+.song:hover {
+    transform: scale(1.01);
+    box-shadow: 2px 2px 2px #c404c4;
+}
+
+.song h6 {
+    text-wrap: wrap;
+    font-style: italic;
+    font-weight: bold;
+    font-size: 30px;
+    color: #c404c4;
+    padding-left: 90px;
+    padding-top: 70px; 
+    position: relative; 
+}
+
+.song img {
+    position: absolute;
+    object-fit: cover;
+    height: 80%;
+    width: 55%;
+    filter: hue-rotate(180deg)
+}
+
 #spotifysong {
     height: 30%;
     width: 100%;
-    bottom: 0;
+    left: 0;
+    bottom: 5px;
     position: absolute;
 }

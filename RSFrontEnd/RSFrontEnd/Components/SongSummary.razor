@@ -4,13 +4,11 @@
     <div @onclick="PopupCall">
         <TrashIcon></TrashIcon>
     </div>
-    <img src="@song.Artist.ImageUrl"/>
-    <h6>Name: @song.Name</h6>
-    <h6>Artist: @song.Artist.Name</h6>
-    <h6>Description: @song.Description</h6>
     <div id="popupmain">
         <Popup @ref="popupRef" Confirm="DeleteItem" />
     </div>
+    <img src="@song.Artist.ImageUrl"/>
+    <h6><span style="background-color: #000000">@song.Name</span></h6>
     <iframe id="spotifysong" src="@song.SpotifyUrl"  frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 </div>
 

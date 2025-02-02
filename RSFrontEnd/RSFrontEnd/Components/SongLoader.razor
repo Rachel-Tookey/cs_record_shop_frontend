@@ -102,7 +102,7 @@
         {
             query.Add("genres", g);
         }
-        var client = new HttpBackendClient<List<Song>>($"api/song?artistname={ArtistName}&songname={SongName}&g{query.ToString()}"); 
+        var client = new HttpBackendClient<List<Song>>($"api/song?artistname={ArtistName}&songname={SongName}&{query.ToString()}"); 
         songs = await client.GetRequest();
         StateHasChanged();
     }
