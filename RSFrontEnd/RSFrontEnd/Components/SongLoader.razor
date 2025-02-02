@@ -1,7 +1,9 @@
+@using System.Web
 @using RSFrontEnd.Clients
 @using RSFrontEnd.Models
 @rendermode InteractiveAuto
 
+<div class="topbar">
 
 <div class="container">
     <div class="row">
@@ -12,24 +14,34 @@
             <InputText class="songsearch border-4 rounded h-10 border-blue-300" @bind-Value="@ArtistName" placeholder="Filter by Artist Name"/>
         </div>
         <div class="filter col-sm-12 col-md-6 col-lg-2 col-xl-2">
-            <InputSelect class="form-select form-select-lg mb-3 h-10" @bind-Value="@GenreName">
+            <InputSelect class="form-select form-select-lg mb-3 h-10" style="height:100px" @bind-Value="@SelectedGenres" multiple="">
                 @if (genres.Count > 0)
                 {
-                    <option selected="true" value="">Any Genre</option>
                     @foreach (var genre in genres)
                     {
                         <option value="@genre.Name">@genre.Name</option>
                     }
                 }
             </InputSelect>
-        </div>
-
-        <div class="filter col-sm-12 col-md-6 col-lg-2 col-xl-2">
-                <button class="btn btn-light" style="height:50px" @onclick="FilterSongs">Apply Filter</button>
+            <div style="height:20px"></div>
             </div>
+        <div class="filter col-sm-12 col-md-6 col-lg-2 col-xl-2">
+            <button class="btn btn-light" style="height:40px" @onclick="FilterSongs">Apply Filter</button>
+            <div style="height:20px">
+            </div>
+            <button class="btn btn-light" style="height:40px" @onclick="ClearFilter">Clear Filter</button>
+        </div>
+        
     </div>
 </div>
 
+<div class="spacer" style="height:50px">
+</div>
+
+</div>
+
+<div style="height:50px">
+</div>
 
 @if (songs == null) {
     <Loader></Loader>
@@ -57,13 +69,13 @@
     public string SongName { get; set; } = "";
 
     public string ArtistName { get; set; } = "";
-
-    public string GenreName { get; set; } = "";
-
+    
     public List<Song> songs { get; set; } = new List<Song>(); 
     
-    public List<Genre> genres { get; set; } = new List<Genre>(); 
-    
+    public List<Genre> genres { get; set; } = new List<Genre>();
+
+    public string[] SelectedGenres { get; set; } = [];
+        
     protected override async Task OnInitializedAsync()
     {
         var songWebClient = new HttpBackendClient<List<Song>>("api/song");
@@ -85,9 +97,22 @@
 
     public async Task FilterSongs()
     {
-        var client = new HttpBackendClient<List<Song>>($"api/song?artistname={ArtistName}&songname={SongName}&genre={GenreName}"); 
+        var query = HttpUtility.ParseQueryString(string.Empty);
+        foreach (var g in SelectedGenres)
+        {
+            query.Add("genres", g);
+        }
+        var client = new HttpBackendClient<List<Song>>($"api/song?artistname={ArtistName}&songname={SongName}&g{query.ToString()}"); 
         songs = await client.GetRequest();
         StateHasChanged();
+    }
+
+    public void ClearFilter()
+    {
+        ArtistName = "";
+        SongName = "";
+        SelectedGenres = [];
+        FilterSongs();
     }
     
 }

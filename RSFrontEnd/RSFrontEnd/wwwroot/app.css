@@ -272,3 +272,21 @@ h6 {
     font-style: italic;
     font-weight: bold;
 }
+
+.spacer {
+    border-bottom: 1px double #ccc;
+
+}
+
+.topbar {
+    position: sticky;
+    top: 48px;
+    z-index: 1000;
+    background: #000000;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
