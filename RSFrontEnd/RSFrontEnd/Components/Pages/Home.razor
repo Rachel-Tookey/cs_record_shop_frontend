@@ -36,7 +36,7 @@
 }
 else
 {
-    <HomeArtistDisplay DisplayedSong="@randomSong" NewRandomSong="@UpdateRandom"></HomeArtistDisplay>
+    <HomeArtistDisplay DisplayedSong="@randomSong" NewRandomSong="@UpdateRandom" ></HomeArtistDisplay>
 }
 
 
@@ -101,9 +101,11 @@ else
 
     public void UpdateChoice(int id)
     {
-        Console.WriteLine(id);
         randomSong = FilteredSongs.Where(s => s.Id == id).FirstOrDefault();
-        SearchText = ""; 
+        if (randomSong != null)
+        {
+            SearchText = ""; 
+        }
     }
     
     
